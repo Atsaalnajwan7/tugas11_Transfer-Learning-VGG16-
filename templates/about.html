@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}About - Fruit Freshness Classifier{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-700 mb-4"><i class="bi bi-info-circle"></i> Tentang Project</h2>
+
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <h5><i class="bi bi-arrow-repeat text-success"></i> Transfer Learning</h5>
+      <p class="text-muted">Transfer Learning adalah teknik memanfaatkan model yang sudah dilatih pada dataset besar
+        (misalnya ImageNet) untuk digunakan kembali pada tugas baru dengan dataset yang lebih kecil.
+        Pendekatan ini menghemat waktu training dan biasanya menghasilkan akurasi yang lebih baik dibandingkan
+        melatih model dari nol.</p>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <h5><i class="bi bi-diagram-3 text-success"></i> VGG16</h5>
+      <p class="text-muted">VGG16 adalah arsitektur Convolutional Neural Network dengan 16 layer berbobot,
+        dikembangkan oleh Visual Geometry Group Oxford. Model ini terkenal karena kesederhanaan arsitekturnya
+        yang hanya menggunakan filter konvolusi 3x3 secara berulang.</p>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <h5><i class="bi bi-gear text-success"></i> Cara Kerja Model</h5>
+      <ol class="text-muted">
+        <li>Gambar buah diunggah dan di-resize menjadi 224x224 piksel.</li>
+        <li>Layer konvolusi VGG16 (pretrained, dibekukan/frozen) mengekstrak fitur visual dari gambar.</li>
+        <li>Fitur diringkas menggunakan Global Average Pooling.</li>
+        <li>Fitur diproses oleh classifier baru: Dense(256) &rarr; Dropout(0.5) &rarr; Dense(jumlah kelas, softmax).</li>
+        <li>Model menghasilkan probabilitas untuk setiap kelas (kombinasi jenis buah dan status kesegaran).</li>
+      </ol>
+    </div>
+  </div>
+</div>
+{% endblock %}

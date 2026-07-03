@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}Home - Fruit Freshness Classifier{% endblock %}
+{% block content %}
+
+<section class="hero-section">
+  <div class="container text-center py-5">
+    <h1 class="display-5 fw-700"><i class="bi bi-apple"></i> Klasifikasi Kesegaran Buah</h1>
+    <p class="lead mt-3">Deteksi apakah buah <strong>Fresh</strong> atau <strong>Rotten</strong> menggunakan
+      Transfer Learning VGG16, dibangun dengan Flask.</p>
+
+    {% if not model_ready %}
+    <div class="alert alert-light d-inline-block mt-2 shadow-sm">
+      <i class="bi bi-exclamation-circle text-warning"></i>
+      Model belum dilatih. Jalankan <code>python train.py</code> terlebih dahulu.
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+      <a href="{{ url_for('predict_page') }}" class="btn btn-orange btn-lg me-2">
+        <i class="bi bi-camera"></i> Mulai Prediksi
+      </a>
+      <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">
+        <i class="bi bi-info-circle"></i> Pelajari Lebih Lanjut
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 text-center p-3">
+        <i class="bi bi-cpu display-5 text-success"></i>
+        <div class="card-body">
+          <h5 class="card-title">Transfer Learning</h5>
+          <p class="card-text text-muted">Memanfaatkan VGG16 yang telah dilatih pada ImageNet untuk ekstraksi fitur gambar buah.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 text-center p-3">
+        <i class="bi bi-lightning-charge display-5 text-warning"></i>
+        <div class="card-body">
+          <h5 class="card-title">Prediksi Cepat</h5>
+          <p class="card-text text-muted">Unggah gambar buah dan dapatkan hasil klasifikasi beserta confidence score secara instan.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 text-center p-3">
+        <i class="bi bi-graph-up display-5 text-success"></i>
+        <div class="card-body">
+          <h5 class="card-title">Evaluasi Lengkap</h5>
+          <p class="card-text text-muted">Dilengkapi confusion matrix, classification report, dan grafik akurasi/loss.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

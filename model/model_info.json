@@ -1,0 +1,19 @@
+{
+  "num_classes": 6,
+  "class_names": [
+    "apple_fresh",
+    "apple_rotten",
+    "banana_fresh",
+    "banana_rotten",
+    "strawberry_fresh",
+    "strawberry_rotten"
+  ],
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "val_accuracy": 0.8811880946159363,
+  "val_loss": 0.5866603851318359,
+  "total_params": 14847558
+}

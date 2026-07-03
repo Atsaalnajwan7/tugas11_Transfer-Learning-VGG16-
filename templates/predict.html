@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block title %}Prediction - Fruit Freshness Classifier{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-700 mb-4 text-center"><i class="bi bi-camera"></i> Prediksi Kesegaran Buah</h2>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <form id="uploadForm" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <div id="dropZone" class="drop-zone text-center p-5 mb-3">
+              <i class="bi bi-cloud-arrow-up display-4 text-success"></i>
+              <p class="mt-2 mb-1">Drag &amp; drop gambar di sini</p>
+              <p class="text-muted small">atau klik untuk memilih file (JPG, PNG, WEBP)</p>
+              <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.webp" hidden required>
+            </div>
+
+            <div id="previewWrap" class="text-center mb-3 d-none">
+              <img id="previewImg" src="" class="img-fluid rounded shadow-sm preview-img">
+            </div>
+
+            <div id="progressWrap" class="mb-3 d-none">
+              <div class="progress" style="height: 8px;">
+                <div id="progressBar" class="progress-bar bg-orange" style="width:0%"></div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-center">
+              <button type="submit" id="predictBtn" class="btn btn-orange px-4" disabled>
+                <i class="bi bi-magic"></i> Predict
+              </button>
+              <button type="button" id="resetBtn" class="btn btn-outline-secondary px-4">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingOverlay" class="loading-overlay d-none">
+  <div class="text-center text-white">
+    <div class="spinner-border text-light mb-3" style="width:3rem;height:3rem;" role="status"></div>
+    <p>Menganalisis gambar...</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const previewWrap = document.getElementById('previewWrap');
+const previewImg = document.getElementById('previewImg');
+const predictBtn = document.getElementById('predictBtn');
+const resetBtn = document.getElementById('resetBtn');
+const uploadForm = document.getElementById('uploadForm');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const progressWrap = document.getElementById('progressWrap');
+const progressBar = document.getElementById('progressBar');
+
+dropZone.addEventListener('click', () => fileInput.click());
+
+['dragover', 'dragenter'].forEach(evt => {
+  dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.add('drag-active'); });
+});
+['dragleave', 'drop'].forEach(evt => {
+  dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.remove('drag-active'); });
+});
+dropZone.addEventListener('drop', (e) => {
+  const files = e.dataTransfer.files;
+  if (files.length) {
+    fileInput.files = files;
+    showPreview(files[0]);
+  }
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) showPreview(fileInput.files[0]);
+});
+
+function showPreview(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewImg.src = e.target.result;
+    previewWrap.classList.remove('d-none');
+    predictBtn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+resetBtn.addEventListener('click', () => {
+  fileInput.value = '';
+  previewWrap.classList.add('d-none');
+  predictBtn.disabled = true;
+});
+
+uploadForm.addEventListener('submit', (e) => {
+  if (!fileInput.files.length) {
+    e.preventDefault();
+    return;
+  }
+  loadingOverlay.classList.remove('d-none');
+  progressWrap.classList.remove('d-none');
+  let pct = 0;
+  const interval = setInterval(() => {
+    pct = Math.min(pct + 10, 90);
+    progressBar.style.width = pct + '%';
+  }, 150);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+                   precision    recall  f1-score   support
+
+      apple_fresh       0.81      1.00      0.89        21
+     apple_rotten       1.00      0.20      0.33        10
+     banana_fresh       0.00      0.00      0.00         3
+    banana_rotten       0.74      0.94      0.83        18
+ strawberry_fresh       0.89      0.95      0.92        41
+strawberry_rotten       0.67      0.50      0.57         8
+
+         accuracy                           0.82       101
+        macro avg       0.68      0.60      0.59       101
+     weighted avg       0.81      0.82      0.78       101

@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}Model Information - Fruit Freshness Classifier{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-700 mb-4"><i class="bi bi-cpu"></i> Informasi Model</h2>
+
+  {% if info %}
+  <div class="row g-4 mb-4">
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <h6 class="text-muted small">Jumlah Kelas</h6>
+        <h4 class="text-success fw-700">{{ info.num_classes }}</h4>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <h6 class="text-muted small">Val Accuracy</h6>
+        <h4 class="text-success fw-700">{{ (info.val_accuracy * 100) | round(2) }}%</h4>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <h6 class="text-muted small">Val Loss</h6>
+        <h4 class="text-success fw-700">{{ info.val_loss | round(4) }}</h4>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <h6 class="text-muted small">Total Parameter</h6>
+        <h4 class="text-success fw-700">{{ '{:,}'.format(info.total_params) }}</h4>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> Model belum dilatih. Jalankan <code>python train.py</code> untuk menghasilkan info model.
+  </div>
+  {% endif %}
+
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="mb-3"><i class="bi bi-diagram-3"></i> Arsitektur</h5>
+      <ul class="text-muted">
+        <li>Base Model: VGG16 (pretrained ImageNet, <code>include_top=False</code>, frozen)</li>
+        <li>Input Shape: 224 x 224 x 3</li>
+        <li>GlobalAveragePooling2D</li>
+        <li>Dense(256, activation='relu')</li>
+        <li>Dropout(0.5)</li>
+        <li>Dense(jumlah_kelas, activation='softmax')</li>
+        <li>Optimizer: Adam (learning rate 0.0001)</li>
+        <li>Loss: Categorical Crossentropy</li>
+      </ul>
+    </div>
+  </div>
+
+  {% if class_names %}
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <h5 class="mb-3"><i class="bi bi-tags"></i> Daftar Kelas</h5>
+      {% for c in class_names %}
+      <span class="badge bg-success me-2 mb-2 p-2">{{ c }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
